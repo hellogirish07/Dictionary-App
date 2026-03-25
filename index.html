@@ -16,13 +16,17 @@
   <link rel="stylesheet" href="style.css" class="css">
 </head>
 
-<body class="p-4 md:p-8 flex justify-center">
+<body class="p-4 md:p-8 flex justify-center min-h-screen">
   <div class="w-full max-w-2xl">
     <!-- Header Section -->
     <header class="text-center mb-8">
-      <h1 class="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300 mb-2">
-        GK Words
-      </h1>
+      <div class="flex flex-row gap-2 text-center justify-center items-center mb-2">
+        <img src="/img/Logo.png" alt="Logo GK" />
+        <h1
+          class="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300 mb-2">
+          GK Words
+        </h1>
+      </div>
       <p class="text-slate-400 text-sm">Your modern English-Hindi Dictionary App</p>
     </header>
 
@@ -30,7 +34,7 @@
     <div class="glass-card rounded-3xl p-2 mb-8 flex items-center gap-2">
       <input id="wordInput" type="text" placeholder="Search a word..."
         class="search-input flex-1 py-3 px-6 rounded-2xl outline-none text-lg text-white" autocomplete="off" />
-        
+
       <button id="searchBtn"
         class="bg-blue-600 hover:bg-blue-500 text-white font-bold h-12 w-12 md:w-auto md:px-8 rounded-2xl transition-all flex items-center justify-center shadow-lg shadow-blue-900/20">
         <span class="hidden md:inline">Search</span>
@@ -48,7 +52,7 @@
     <main id="result" class="space-y-6 hidden">
       <!-- Main Content Injected by JS -->
     </main>
-    
+
   </div>
   <script src="script.js"></script>
 </body>
