@@ -10,7 +10,8 @@ input.addEventListener("keypress", (e) => {
 });
 
 async function fetchWord() {
-  const word = input.value.trim().split(" ")[0];
+  // const word = input.value.trim().split(" ")[0];
+  const word = input.value.trim();
 
   if (!word) {
     showStatus(
