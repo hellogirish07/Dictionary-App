@@ -16,44 +16,203 @@
   <link rel="stylesheet" href="style.css" class="css">
 </head>
 
-<body class="p-4 md:p-8 flex justify-center min-h-screen">
-  <div class="w-full max-w-2xl">
-    <!-- Header Section -->
-    <header class="text-center mb-8">
-      <div class="flex flex-row gap-2 text-center justify-center items-center mb-2">
-        <img src="/img/Logo.png" alt="Logo GK" />
-        <h1
-          class="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-300 mb-2">
-          GK Words
-        </h1>
-      </div>
-      <p class="text-slate-400 text-sm">Your modern English-Hindi Dictionary App</p>
-    </header>
+<body class="flex">
 
-    <!-- Search Box -->
-    <div class="glass-card rounded-3xl p-2 mb-8 flex items-center gap-2">
-      <input id="wordInput" type="text" placeholder="Search a word..."
-        class="search-input flex-1 py-3 px-6 rounded-2xl outline-none text-lg text-white" autocomplete="off" />
+  <!-- Mobile Header -->
+  <div class="fixed top-0 left-0 right-0 lg:hidden flex items-center justify-between p-4 z-40 glass-card">
+    <h1 class="header-font font-bold text-xl">GK<span style="color: var(--primary)">Words</span></h1>
+    <button onclick="toggleSidebar()" class="p-2 rounded-lg bg-black/5">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
 
-      <button id="searchBtn"
-        class="bg-blue-600 hover:bg-blue-500 text-white font-bold h-12 w-12 md:w-auto md:px-8 rounded-2xl transition-all flex items-center justify-center shadow-lg shadow-blue-900/20">
-        <span class="hidden md:inline">Search</span>
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 md:hidden" viewBox="0 0 20 20" fill="currentColor">
-          <path fill-rule="evenodd"
-            d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-            clip-rule="evenodd" />
-        </svg>
-      </button>
+  <!-- Sidebar Overlay -->
+  <div id="sidebarOverlay" onclick="toggleSidebar()"
+    class="fixed inset-0 sidebar-overlay opacity-0 pointer-events-none z-40 lg:hidden"></div>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed inset-y-0 left-0 w-72 glass-card m-4 rounded-3xl flex flex-col p-6">
+    <div class="mb-10 px-2 flex items-center gap-3">
+      <div class="w-10 h-10 rounded-xl bg-[var(--primary)] flex items-center justify-center text-[var(--bg)] font-bold">
+        GK</div>
+      <h1 class="header-font text-2xl font-bold">GK<span style="color: var(--primary)">Words</span></h1>
     </div>
 
-    <!-- Dynamic Results Area -->
-    <div id="status" class="text-center py-4 hidden"></div>
+    <nav class="flex-1 space-y-2">
+      <button onclick="navigateTo('dictionary')"
+        class="nav-link w-full flex items-center gap-3 p-4 font-semibold text-left active" id="link-dictionary">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        Dictionary
+      </button>
+      <button onclick="navigateTo('history')"
+        class="nav-link w-full flex items-center gap-3 p-4 font-semibold text-left" id="link-history">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        History
+      </button>
+      <button onclick="navigateTo('about')" class="nav-link w-full flex items-center gap-3 p-4 font-semibold text-left"
+        id="link-about">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        About App
+      </button>
+      <button onclick="navigateTo('contact')"
+        class="nav-link w-full flex items-center gap-3 p-4 font-semibold text-left" id="link-contact">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+        Contact
+      </button>
+    </nav>
 
-    <main id="result" class="space-y-6 hidden">
-      <!-- Main Content Injected by JS -->
-    </main>
+    <div class="pt-6 border-t border-black/5">
+      <p class="text-[10px] uppercase tracking-widest font-bold opacity-40 mb-4">Appearance</p>
+      <div class="flex gap-4">
+        <button onclick="setTheme('default')" class="flex flex-col items-center gap-2 group">
+          <div
+            class="w-10 h-10 rounded-full border-2 border-white/20 bg-[#10214b] group-hover:scale-110 transition-transform shadow-lg">
+          </div>
+          <span class="text-[9px] font-bold opacity-60">Midnight</span>
+        </button>
+        <button onclick="setTheme('light')" class="flex flex-col items-center gap-2 group">
+          <div
+            class="w-10 h-10 rounded-full border-2 border-white/20 bg-[#ebe7e1] group-hover:scale-110 transition-transform shadow-lg">
+          </div>
+          <span class="text-[9px] font-bold opacity-60">Cream</span>
+        </button>
+      </div>
+    </div>
+  </aside>
 
-  </div>
+  <!-- Main Content Area -->
+  <main class="flex-1 lg:ml-80 p-4 md:p-12 mt-20 lg:mt-0 overflow-y-auto max-h-screen">
+
+    <!-- DICTIONARY PAGE -->
+    <div id="page-dictionary" class="page-container page-active">
+      <div class="max-w-2xl mx-auto">
+        <header class="mb-10">
+          <h2 class="header-font text-4xl md:text-5xl font-bold mb-2">Search Lexicon</h2>
+          <p class="opacity-60 text-sm md:text-base">Translate words and complex phrases instantly.</p>
+        </header>
+
+        <!-- Search Input Area -->
+        <div class="glass-card rounded-3xl p-2 flex items-center gap-2 mb-6 shadow-2xl">
+          <input id="wordInput" type="text" placeholder="Search..."
+            class="flex-1 bg-transparent py-4 px-6 outline-none text-lg placeholder:opacity-40" />
+          <button id="searchBtn"
+            class="bg-[var(--primary)] text-[var(--bg)] min-w-[56px] md:px-10 py-4 rounded-2xl font-bold shadow-lg hover:brightness-110 transition-all active:scale-95 flex items-center justify-center gap-2">
+            <span class="hidden md:inline">Search</span>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 md:hidden" fill="none" viewBox="0 0 24 24"
+              stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </button>
+        </div>
+
+        <!-- Quick History Tags -->
+        <div id="quickHistoryContainer" class="mb-10 hidden">
+          <div class="flex justify-between items-center mb-3 px-4">
+            <span class="text-[10px] uppercase font-bold tracking-widest opacity-40">Recent</span>
+            <button onclick="navigateTo('history')"
+              class="text-[9px] uppercase font-bold tracking-widest opacity-40 hover:opacity-100 transition-opacity">View
+              All</button>
+          </div>
+          <div id="quickHistoryList" class="flex flex-wrap gap-2 px-2"></div>
+        </div>
+
+        <div id="status" class="hidden mb-6 text-center"></div>
+        <div id="result" class="space-y-6"></div>
+      </div>
+    </div>
+
+    <!-- HISTORY PAGE -->
+    <div id="page-history" class="page-container hidden-page max-w-2xl mx-auto">
+      <header class="mb-10">
+        <h2 class="header-font text-4xl md:text-5xl font-bold mb-2">History</h2>
+        <p class="opacity-60 text-sm md:text-base">Review and reopen your previous searches.</p>
+      </header>
+
+      <div class="glass-card rounded-3xl p-6 md:p-10">
+        <div class="flex justify-between items-center mb-8 pb-4 border-b border-white/5">
+          <h4 class="text-[10px] uppercase font-bold tracking-widest opacity-40">Archived Queries</h4>
+          <button onclick="clearHistory()"
+            class="text-xs font-bold text-red-400/60 hover:text-red-400 transition-colors">Clear All History</button>
+        </div>
+
+        <div id="fullHistoryList" class="space-y-3">
+          <!-- History items will be injected here -->
+        </div>
+
+        <div id="emptyHistoryState" class="hidden py-20 text-center opacity-40">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto mb-4" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          <p class="text-sm">Your search history is empty.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ABOUT PAGE -->
+    <div id="page-about" class="page-container hidden-page max-w-2xl mx-auto">
+      <div class="glass-card rounded-3xl p-8 md:p-12">
+        <h2 class="header-font text-4xl font-bold mb-6">About GK Words</h2>
+        <p class="mb-6 leading-relaxed opacity-80 text-lg">
+          GK Words is a premium lexicon application designed for professional scholars. We prioritize clarity,
+          aesthetics, and speed.
+        </p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+          <div class="p-6 muted-box rounded-2xl">
+            <h4 class="font-bold text-[var(--primary)] mb-2">History Persistence</h4>
+            <p class="text-xs opacity-60">Your recent searches are stored locally so you can revisit them later.</p>
+          </div>
+          <div class="p-6 muted-box rounded-2xl">
+            <h4 class="font-bold text-[var(--primary)] mb-2">Dual Voice</h4>
+            <p class="text-xs opacity-60">Natural text-to-speech for both English and Hindi pronunciations.</p>
+          </div>
+        </div>
+        <p class="text-[10px] opacity-30 tracking-widest uppercase text-center">Version 2.2.0 • Split History Tab</p>
+      </div>
+    </div>
+
+    <!-- CONTACT PAGE -->
+    <div id="page-contact" class="page-container hidden-page max-w-2xl mx-auto">
+      <div class="glass-card rounded-3xl p-8 md:p-12">
+        <h2 class="header-font text-4xl font-bold mb-6">Contact</h2>
+        <form class="space-y-5" onsubmit="event.preventDefault();">
+          <div class="space-y-2">
+            <label class="text-[10px] font-bold uppercase tracking-widest opacity-40 ml-4">Full Name</label>
+            <input type="text"
+              class="w-full muted-box p-4 rounded-2xl outline-none focus:ring-2 ring-[var(--primary)] transition-all"
+              placeholder="Enter name">
+          </div>
+          <div class="space-y-2">
+            <label class="text-[10px] font-bold uppercase tracking-widest opacity-40 ml-4">Email Address</label>
+            <input type="email"
+              class="w-full muted-box p-4 rounded-2xl outline-none focus:ring-2 ring-[var(--primary)] transition-all"
+              placeholder="Enter email">
+          </div>
+          <button
+            class="w-full bg-[var(--primary)] text-[var(--bg)] p-5 rounded-2xl font-bold shadow-xl hover:brightness-110">Send
+            Message</button>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
   <script src="script.js"></script>
 </body>
 
